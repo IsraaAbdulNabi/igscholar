@@ -1,0 +1,38 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+import time
+
+
+def extract_authoers(elements):
+    authors=[]
+    for xi in range(len(elements)):
+        authors.append(elements[xi].text)
+    return authors
+
+
+path= './chromedriver'
+driver = webdriver.Chrome(path)
+driver.get("https://scholar.google.com/citations?hl=en&view_op=search_authors&mauthors=computer+science")
+#assert "Python" in driver.title
+#elem = driver.find_element_by_name("q")
+flag=1
+count =0
+while flag:
+ elements= driver.find_elements_by_class_name("gs_ai_name")
+ print (extract_authoers(elements))
+ next=driver.find_elements_by_class_name("gs_wr")[2]
+ if (next):
+     next.click()
+     count = count+1
+ else:
+     flag=0
+ if (count == 10):
+     time.sleep(10)
+
+
+
+#elem.send_keys("pycon")
+#elem.send_keys(Keys.RETURN)
+#assert "No results found." not in driver.page_source
+driver.close()
